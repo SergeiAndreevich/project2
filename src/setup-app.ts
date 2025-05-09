@@ -1,4 +1,8 @@
 import express, { Express, Request,Response } from "express";
+import {blogsRouter} from "./routers/blogs.router";
+import {PATH} from "./core/path/path";
+import {postsRouter} from "./routers/posts.router";
+import {testingRouter} from "./routers/testing.router";
 
 
 export const setupApp = (app: Express) => {
@@ -8,9 +12,10 @@ export const setupApp = (app: Express) => {
         res.status(200).send(`go to`);
     });
 
-    // app.use(PATH.videos, videosRouter);
-    // app.use(PATH.testing, testingRouter);
 
+    app.use(PATH.blogs,blogsRouter);
+    app.use(PATH.posts,postsRouter);
+    app.use(PATH.testing,testingRouter);
     //setupSwagger(app);
     return app;
 };
