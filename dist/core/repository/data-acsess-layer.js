@@ -26,6 +26,9 @@ exports.repository = {
         mock_db_db_1.localDB.posts = [];
         mock_db_db_1.localDB.blogs = [];
     },
+    findAll: function () {
+        return mock_db_db_1.localDB;
+    },
     updateBlog: function (oldBlog, newBlog) {
         oldBlog.name = newBlog.name;
         oldBlog.description = newBlog.description;

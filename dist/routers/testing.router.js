@@ -3,12 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.testingRouter = void 0;
 const express_1 = require("express");
 const http_statuses_1 = require("../core/core-types/http-statuses");
-const mock_db_db_1 = require("../db/mock-db.db");
+const data_acsess_layer_1 = require("../core/repository/data-acsess-layer");
 exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter
-    .delete('', (req, res) => {
-    //repository.removeAll();
-    mock_db_db_1.localDB.posts = [];
-    mock_db_db_1.localDB.blogs = [];
-    res.status(http_statuses_1.httpStatus.NoContent);
+    .delete('/all-data', (req, res) => {
+    data_acsess_layer_1.repository.removeAll();
+    //localDB.posts = [];
+    //localDB.blogs = [];
+    res.status(http_statuses_1.httpStatus.NoContent).send('No content');
+})
+    .get('all-data', (req, res) => {
+    res.send(data_acsess_layer_1.repository.findAllPosts()).status(http_statuses_1.httpStatus.Ok);
 });
