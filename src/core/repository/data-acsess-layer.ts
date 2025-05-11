@@ -30,7 +30,8 @@ export const repository = {
         localDB.blogs = []
     },
     findAll: function (){
-        return localDB
+        const response = {posts: localDB.posts, blogs: localDB.blogs};
+        return response
     },
     updateBlog: function (oldBlog:Blog, newBlog:BlogInputModel){
         oldBlog.name = newBlog.name;

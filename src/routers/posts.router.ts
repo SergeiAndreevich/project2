@@ -11,7 +11,7 @@ export const postsRouter = Router({});
 
 postsRouter
     .get('', findAllPostsHandler)
-    .post('', postInputModelValidation,checkValidationErrors, createPostHandler)
+    .post('', postInputModelValidation, checkValidationErrors, createPostHandler)
     .get('/:id', idValidation, checkValidationErrors, findPostByIdHandler)
     .put('/:id', idValidation, postInputModelValidation, checkValidationErrors, updatePostByIdHandler)
     .delete('/:id', idValidation, checkValidationErrors, removePostByIdHandler)

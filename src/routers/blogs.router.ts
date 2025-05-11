@@ -11,8 +11,8 @@ import {checkValidationErrors} from "../core/validation/ValidationErrors";
 export const blogsRouter = Router({});
 
 blogsRouter
-    .get('', findAllBlogsHandler)
-    .get('/:id',idValidation, checkValidationErrors,findBlogByIdHandler)
+    .get('', checkValidationErrors, findAllBlogsHandler)
+    .get('/:id',idValidation, checkValidationErrors, findBlogByIdHandler)
     .post('', blogInputModelValidation, checkValidationErrors, createBlogHandler)
-    .put('/:id', idValidation, blogInputModelValidation, checkValidationErrors, updateBlogByIdHandler)
-    .delete('/:id',idValidation,checkValidationErrors,removeBlogByIdHandler)
+    .put('/:id',idValidation,blogInputModelValidation, checkValidationErrors, updateBlogByIdHandler)
+    .delete('/:id',idValidation, checkValidationErrors, removeBlogByIdHandler)

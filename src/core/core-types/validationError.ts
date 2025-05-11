@@ -1,4 +1,4 @@
-export type ValidationError = {
+export type validationError = {
     field: string;
     message: string;
 }

@@ -15,5 +15,5 @@ function createPostHandler(req, res) {
         blogName: ((_a = data_acsess_layer_1.repository.findBlogById(req.body.blogId)) === null || _a === void 0 ? void 0 : _a.name) || "blog name"
     };
     data_acsess_layer_1.repository.createNewPost(newPost);
-    res.status(http_statuses_1.httpStatus.Created).send();
+    res.status(http_statuses_1.httpStatus.Created).send(newPost);
 }

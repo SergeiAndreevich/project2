@@ -12,6 +12,6 @@ exports.testingRouter
     //localDB.blogs = [];
     res.status(http_statuses_1.httpStatus.NoContent).send('No content');
 })
-    .get('all-data', (req, res) => {
-    res.send(data_acsess_layer_1.repository.findAllPosts()).status(http_statuses_1.httpStatus.Ok);
+    .get('/all-data', (req, res) => {
+    res.send(data_acsess_layer_1.repository.findAll()).status(http_statuses_1.httpStatus.Ok);
 });

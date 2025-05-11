@@ -16,7 +16,7 @@ describe('test blogs', ()=>{
     const testBlog: BlogInputModel = {
         name: "Test Blog",
         description: "Test Blog description",
-        websiteUrl: "http://localhost:3000"
+        websiteUrl: "http://localhost.ru"
     };
 
     beforeAll(async () => {
