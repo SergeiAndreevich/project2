@@ -12,7 +12,7 @@ const testing_router_1 = require("./routers/testing.router");
 const setupApp = (app) => {
     app.use(express_1.default.json()); // middleware для парсинга JSON в теле запроса
     app.get('/', (req, res) => {
-        res.status(200).send(`go to`);
+        res.status(200).send(`go to ${path_1.PATH.docs}`);
     });
     app.use(path_1.PATH.blogs, blogs_router_1.blogsRouter);
     app.use(path_1.PATH.posts, posts_router_1.postsRouter);

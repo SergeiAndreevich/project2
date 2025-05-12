@@ -9,7 +9,7 @@ export const setupApp = (app: Express) => {
     app.use(express.json()); // middleware для парсинга JSON в теле запроса
 
     app.get('/', (req: Request, res: Response) => {
-        res.status(200).send(`go to`);
+        res.status(200).send(`go to ${PATH.docs}`);
     });
 
 

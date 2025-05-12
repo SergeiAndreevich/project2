@@ -1,5 +1,6 @@
 export const PATH = {
     blogs: '/blogs',
     posts: '/posts',
-    testing: '/testing'
+    testing: '/testing',
+    docs: '/api'
 }
