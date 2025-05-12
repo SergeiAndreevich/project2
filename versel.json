@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "project2",
+  "name": "project 2",
   "builds": [
     {
       "src": "src/index.ts",
