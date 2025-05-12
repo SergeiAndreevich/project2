@@ -7,11 +7,11 @@ export type ValidationErrorExample = {
     message: string
 }
 export type ValidationErrorsStore = {
-    errorMessages: ValidationErrorExample[]
+    errorsMessages: ValidationErrorExample[]
 }
 
 export const createErrorMessage = (errors: ValidationErrorExample[]):ValidationErrorsStore =>{
-    return {errorMessages:errors};
+    return {errorsMessages:errors};
 }
 
 const formatErrors = (error: ValidationError) => {
