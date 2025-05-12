@@ -14,5 +14,5 @@ postsRouter
     .get('', findAllPostsHandler)
     .post('', authorizeMiddleware, postInputModelValidation, checkValidationErrors, createPostHandler)
     .get('/:id', idValidation, checkValidationErrors, findPostByIdHandler)
-    .put('/:id', idValidation, postInputModelValidation, checkValidationErrors, updatePostByIdHandler)
-    .delete('/:id', idValidation, checkValidationErrors, removePostByIdHandler)
+    .put('/:id',authorizeMiddleware, idValidation, postInputModelValidation, checkValidationErrors, updatePostByIdHandler)
+    .delete('/:id',authorizeMiddleware, idValidation, checkValidationErrors, removePostByIdHandler)
