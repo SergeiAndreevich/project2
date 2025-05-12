@@ -10,10 +10,11 @@ const updateBlogByIdHandler_1 = require("../Blogs/handlers/updateBlogByIdHandler
 const checkId_validation_1 = require("../core/validation/checkId.validation");
 const InputBlog_validation_1 = require("../core/validation/InputBlog.validation");
 const ValidationErrors_1 = require("../core/validation/ValidationErrors");
+const authorization_middleware_1 = require("../authorization/authorization.middleware");
 exports.blogsRouter = (0, express_1.Router)({});
 exports.blogsRouter
     .get('', ValidationErrors_1.checkValidationErrors, findAllBlogsHandler_1.findAllBlogsHandler)
     .get('/:id', checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, findBlogByIdHandler_1.findBlogByIdHandler)
-    .post('', InputBlog_validation_1.blogInputModelValidation, ValidationErrors_1.checkValidationErrors, createBlog_handler_1.createBlogHandler)
-    .put('/:id', checkId_validation_1.idValidation, InputBlog_validation_1.blogInputModelValidation, ValidationErrors_1.checkValidationErrors, updateBlogByIdHandler_1.updateBlogByIdHandler)
-    .delete('/:id', checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, removeBlogByIdHandler_1.removeBlogByIdHandler);
+    .post('', authorization_middleware_1.authorizeMiddleware, InputBlog_validation_1.blogInputModelValidation, ValidationErrors_1.checkValidationErrors, createBlog_handler_1.createBlogHandler)
+    .put('/:id', authorization_middleware_1.authorizeMiddleware, checkId_validation_1.idValidation, InputBlog_validation_1.blogInputModelValidation, ValidationErrors_1.checkValidationErrors, updateBlogByIdHandler_1.updateBlogByIdHandler)
+    .delete('/:id', authorization_middleware_1.authorizeMiddleware, checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, removeBlogByIdHandler_1.removeBlogByIdHandler);

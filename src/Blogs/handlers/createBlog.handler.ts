@@ -14,5 +14,5 @@ export function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Response
         websiteUrl: req.body.websiteUrl
     };
     repository.createNewBlog(newBlog);
-    res.status(httpStatus.Created).send()
+    res.status(httpStatus.Created).send(newBlog)
 }

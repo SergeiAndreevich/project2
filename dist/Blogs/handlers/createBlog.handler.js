@@ -12,5 +12,5 @@ function createBlogHandler(req, res) {
         websiteUrl: req.body.websiteUrl
     };
     data_acsess_layer_1.repository.createNewBlog(newBlog);
-    res.status(http_statuses_1.httpStatus.Created).send();
+    res.status(http_statuses_1.httpStatus.Created).send(newBlog);
 }

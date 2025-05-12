@@ -9,7 +9,8 @@ testingRouter
         repository.removeAll();
         //localDB.posts = [];
         //localDB.blogs = [];
-        res.status(httpStatus.NoContent).send('No content')
+        res.sendStatus(httpStatus.NoContent)
+        return;
     })
     .get('/all-data', (req:Request,res:Response)=>{
             res.send(repository.findAll()).status(httpStatus.Ok)

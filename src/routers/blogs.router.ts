@@ -7,12 +7,13 @@ import {updateBlogByIdHandler} from "../Blogs/handlers/updateBlogByIdHandler";
 import {idValidation} from "../core/validation/checkId.validation";
 import {blogInputModelValidation} from "../core/validation/InputBlog.validation";
 import {checkValidationErrors} from "../core/validation/ValidationErrors";
+import {authorizeMiddleware} from "../authorization/authorization.middleware";
 
 export const blogsRouter = Router({});
 
 blogsRouter
     .get('', checkValidationErrors, findAllBlogsHandler)
     .get('/:id',idValidation, checkValidationErrors, findBlogByIdHandler)
-    .post('', blogInputModelValidation, checkValidationErrors, createBlogHandler)
-    .put('/:id',idValidation,blogInputModelValidation, checkValidationErrors, updateBlogByIdHandler)
-    .delete('/:id',idValidation, checkValidationErrors, removeBlogByIdHandler)
+    .post('', authorizeMiddleware, blogInputModelValidation, checkValidationErrors, createBlogHandler)
+    .put('/:id', authorizeMiddleware, idValidation,blogInputModelValidation, checkValidationErrors, updateBlogByIdHandler)
+    .delete('/:id', authorizeMiddleware, idValidation, checkValidationErrors, removeBlogByIdHandler)

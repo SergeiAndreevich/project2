@@ -16,5 +16,5 @@ export function createPostHandler(req:Request<{},{},PostInputModel>,res:Response
         blogName: repository.findBlogById(req.body.blogId)?.name || "blog name"
     };
     repository.createNewPost(newPost);
-    res.status(httpStatus.Created).send(newPost)
+    res.status(httpStatus.Created).send(newPost);
 }

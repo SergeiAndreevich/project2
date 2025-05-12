@@ -10,7 +10,8 @@ exports.testingRouter
     data_acsess_layer_1.repository.removeAll();
     //localDB.posts = [];
     //localDB.blogs = [];
-    res.status(http_statuses_1.httpStatus.NoContent).send('No content');
+    res.sendStatus(http_statuses_1.httpStatus.NoContent);
+    return;
 })
     .get('/all-data', (req, res) => {
     res.send(data_acsess_layer_1.repository.findAll()).status(http_statuses_1.httpStatus.Ok);
