@@ -31,8 +31,10 @@ const blogIdValidation = (0, express_validator_1.body)("blogId")
     .withMessage('blogId is required')
     .isString() // Проверяем, что это строка
     .withMessage("BlogId must be a string")
-    .isNumeric() // Проверяем, что это numericString
-    .withMessage("BlogId must be a numeric string")
+    // .isNumeric()    // Проверяем, что это numericString
+    // .withMessage("BlogId must be a numeric string")
+    .isMongoId()
+    .withMessage("BlogId must be a string")
     .trim()
     .isLength({ min: 1 })
     .withMessage('blogId must consist of length more than or equal to 1');

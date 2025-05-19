@@ -25,6 +25,9 @@ describe('test blogs', ()=>{
         await runDB(SETTINGS.MONGO_URL);
         await request(app).delete('/testing/all-data').expect(httpStatus.NoContent)
     });
+    afterAll(async () => {
+        await request(app).delete('/testing/all-data').expect(httpStatus.NoContent)
+    })
     it('should be unauthorized', async () => {
         await request(app).post(PATH.blogs).send({name: "test",  description: "test",   websiteUrl: "http://localhost.ru"}).expect(httpStatus.Unauthorized);
     })

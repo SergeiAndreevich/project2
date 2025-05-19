@@ -13,6 +13,7 @@ exports.findPostByIdHandler = findPostByIdHandler;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const ValidationErrors_1 = require("../../core/validation/ValidationErrors");
+const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
 function findPostByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -21,7 +22,8 @@ function findPostByIdHandler(req, res) {
                 res.status(http_statuses_1.httpStatus.NotFound).send((0, ValidationErrors_1.createErrorMessage)([{ field: 'id', message: 'Post not found' }]));
                 return;
             }
-            res.status(http_statuses_1.httpStatus.Ok).send(post);
+            const postToView = (0, map_post_to_view_model_1.mapPostToViewModel)(post);
+            res.status(http_statuses_1.httpStatus.Ok).send(postToView);
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

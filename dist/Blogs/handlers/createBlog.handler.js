@@ -12,16 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createBlogHandler = createBlogHandler;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
+const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
 function createBlogHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const newBlog = {
                 name: req.body.name,
                 description: req.body.description,
-                websiteUrl: req.body.websiteUrl
+                websiteUrl: req.body.websiteUrl,
+                createdAt: new Date(),
+                isMembership: false
             };
-            yield data_acsess_layer_1.repository.createNewBlog(newBlog);
-            res.status(http_statuses_1.httpStatus.Created).send(newBlog);
+            const createdBlog = yield data_acsess_layer_1.repository.createNewBlog(newBlog);
+            const blogToView = (0, map_blog_to_view_model_1.mapBlogToViewModel)(createdBlog);
+            res.status(http_statuses_1.httpStatus.Created).send(blogToView);
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

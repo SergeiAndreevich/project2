@@ -108,7 +108,7 @@ exports.repository = {
     },
     removePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const deletedOne = yield mongo_db_1.blogsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+            const deletedOne = yield mongo_db_1.postsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
             if (deletedOne.deletedCount < 1) {
                 throw new Error('Blog does not exist');
             }

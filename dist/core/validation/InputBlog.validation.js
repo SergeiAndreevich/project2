@@ -24,10 +24,10 @@ const websiteUrlValidation = (0, express_validator_1.body)('websiteUrl')
     .withMessage('websiteUrl should be string')
     .trim()
     .isLength({ min: 11, max: 100 })
-    .withMessage('Length of url must be >11 and <100')
+    .withMessage('Length of url must be >10 and <100')
     .isURL()
     .withMessage('It should be url');
-// ОБРАТИ ВНИМАНИЕ СЮДА, ЕСЛИ НЕ БУДЕТ РАБОТАТЬ https://a.r - это 11 символов. Вот откуда цифра
+// ОБРАТИ ВНИМАНИЕ СЮДА, ЕСЛИ НЕ БУДЕТ РАБОТАТЬ https://a.r - это 11 символов. Вот откуда цифра (10 сли http)
 exports.blogInputModelValidation = [
     nameValidation,
     descriptionValidation,

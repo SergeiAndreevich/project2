@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPostHandler = createPostHandler;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
+const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
 function createPostHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -20,11 +21,13 @@ function createPostHandler(req, res) {
                 shortDescription: req.body.shortDescription,
                 content: req.body.content,
                 blogId: req.body.blogId,
-                blogName: "blog name"
+                blogName: "blog name",
+                createdAt: new Date()
             };
             // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
-            yield data_acsess_layer_1.repository.createNewPost(newPost);
-            res.status(http_statuses_1.httpStatus.Created).send(newPost);
+            const createdPost = yield data_acsess_layer_1.repository.createNewPost(newPost);
+            const newPostToView = (0, map_post_to_view_model_1.mapPostToViewModel)(createdPost);
+            res.status(http_statuses_1.httpStatus.Created).send(newPostToView);
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

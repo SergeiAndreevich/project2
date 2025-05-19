@@ -13,15 +13,17 @@ exports.findBlogByIdHandler = findBlogByIdHandler;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const ValidationErrors_1 = require("../../core/validation/ValidationErrors");
+const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
 function findBlogByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const video = yield data_acsess_layer_1.repository.findBlogById(req.params.id);
-            if (!video) {
+            const blog = yield data_acsess_layer_1.repository.findBlogById(req.params.id);
+            if (!blog) {
                 res.status(http_statuses_1.httpStatus.NotFound).send((0, ValidationErrors_1.createErrorMessage)([{ field: 'id', message: 'Blog not found' }]));
                 return;
             }
-            res.status(http_statuses_1.httpStatus.Ok).send(video);
+            const blogToView = (0, map_blog_to_view_model_1.mapBlogToViewModel)(blog);
+            res.status(http_statuses_1.httpStatus.Ok).send(blogToView);
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

@@ -12,11 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findAllPostsHandler = findAllPostsHandler;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
+const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
 function findAllPostsHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const posts = yield data_acsess_layer_1.repository.findAllPosts();
-            res.status(http_statuses_1.httpStatus.Ok).send(posts);
+            const postsToView = posts.map(post => (0, map_post_to_view_model_1.mapPostToViewModel)(post));
+            res.status(http_statuses_1.httpStatus.Ok).send(postsToView);
         }
         catch (error) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

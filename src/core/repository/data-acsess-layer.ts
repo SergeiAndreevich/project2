@@ -82,7 +82,7 @@ export const repository = {
         return
     },
     async removePostById(id:string): Promise<void> {
-        const deletedOne = await blogsCollection.deleteOne({ _id: new ObjectId(id) });
+        const deletedOne = await postsCollection.deleteOne({ _id: new ObjectId(id) });
         if (deletedOne.deletedCount < 1) {
             throw new Error('Blog does not exist');
         }
