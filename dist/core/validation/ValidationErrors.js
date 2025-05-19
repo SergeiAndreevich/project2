@@ -4,7 +4,7 @@ exports.checkValidationErrors = exports.createErrorMessage = void 0;
 const express_validator_1 = require("express-validator");
 const http_statuses_1 = require("../core-types/http-statuses");
 const createErrorMessage = (errors) => {
-    return { errorMessages: errors };
+    return { errorsMessages: errors };
 };
 exports.createErrorMessage = createErrorMessage;
 const formatErrors = (error) => {

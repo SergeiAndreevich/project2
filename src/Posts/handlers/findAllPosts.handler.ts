@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 import {repository} from "../../core/repository/data-acsess-layer";
 import {httpStatus} from "../../core/core-types/http-statuses";
 
-export function findAllPostsHandler(req:Request,res:Response) {
-    const posts = repository.findAllPosts();
-    res.status(httpStatus.Ok).send(posts)
+export async function findAllPostsHandler(req:Request,res:Response) {
+    try {
+        const posts = await repository.findAllPosts();
+        res.status(httpStatus.Ok).send(posts)
+    }
+    catch (error) {
+        res.sendStatus(httpStatus.InternalServerError)
+    }
+
 }

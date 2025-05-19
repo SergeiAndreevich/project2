@@ -3,67 +3,89 @@ import {Blog} from "../../Blogs/Blog";
 import {BlogInputModel} from "../../Blogs/dto/blog-input-model";
 import {Post} from "../../Posts/Post";
 import {PostInputModel} from "../../Posts/dto/post-input-model";
+import {ObjectId, WithId} from "mongodb";
+import {blogsCollection, postsCollection} from "../../db/mongo.db";
+import allPresets from "ts-jest/presets";
 
 export const repository = {
-    findAllBlogs: function (){
-        return localDB.blogs
+    async findAllBlogs(): Promise<WithId<Blog>[]>{
+        const allBlogs = await blogsCollection.find().toArray();
+        return allBlogs
     },
-    createNewBlog: function (blog:Blog){
-        localDB.blogs.push(blog)
-        return  blog
+    async createNewBlog(newBlog:Blog): Promise<WithId<Blog>>{
+        const insertedOne = await blogsCollection.insertOne(newBlog);
+        return { ...newBlog, _id: insertedOne.insertedId }
     },
-    findBlogById: function(id:string){
-        const found = localDB.blogs.find(blog => blog.id == id);
+    async findBlogById (id:string): Promise<WithId<Blog> | null> {
+        //const found = localDB.blogs.find(blog => blog.id == id);
+
+        const found = await blogsCollection.findOne({ _id: new ObjectId(id) });
         return found
     },
-    removeBlogById: function (id:string){
-        const index = localDB.blogs.findIndex((v) => v.id === id);
-        if (index === -1) {
+    async removeBlogById(id:string): Promise<void>{
+        //const index = localDB.blogs.findIndex((v) => v.id === id);
+        const deletedOne = await blogsCollection.deleteOne({ _id: new ObjectId(id) });
+        if (deletedOne.deletedCount < 1) {
             throw new Error('Blog does not exist');
         }
-
-        localDB.blogs.splice(index, 1);
         return
     },
-    removeAll: function (){
-        localDB.posts = [];
-        localDB.blogs = []
+    async removeAll(): Promise<void> {
+        await blogsCollection.deleteMany({});
+        await postsCollection.deleteMany({});
+        return
     },
-    findAll: function (){
-        const response = {posts: localDB.posts, blogs: localDB.blogs};
+    async findAll(): Promise<{}> {
+        const allBlogs = await blogsCollection.find().toArray();
+        const allPosts = await postsCollection.find().toArray();
+        const response = {posts: allPosts, blogs: allBlogs};
         return response
     },
-    updateBlog: function (oldBlog:Blog, newBlog:BlogInputModel){
-        oldBlog.name = newBlog.name;
-        oldBlog.description = newBlog.description;
-        oldBlog.websiteUrl = newBlog.websiteUrl;
-        return
-    },
-    findAllPosts: function (){
-        return localDB.posts
-    },
-    createNewPost: function (post: Post){
-        localDB.posts.push(post)
-        return post
-    },
-    findPostById: function(id:string){
-        const found = localDB.posts.find(post => post.id == id);
-        return found
-    },
-    updatePost: function (oldPost:Post, newPost:PostInputModel){
-        oldPost.title = newPost.title;
-        oldPost.shortDescription = newPost.shortDescription;
-        oldPost.content = newPost.content;
-        oldPost.blogId = newPost.blogId;
-        return
-    },
-    removePostById: function (id:string){
-        const index = localDB.posts.findIndex((v) => v.id === id);
-        if (index === -1) {
+    async updateBlog(id: string, newBlog:BlogInputModel): Promise<void> {
+        const updatedOne = await blogsCollection.updateOne({ _id: new ObjectId(id) },
+            {
+                $set: {
+                    name: newBlog.name,
+                    description: newBlog.description,
+                    websiteUrl: newBlog.websiteUrl
+                }
+            });
+        if(updatedOne.matchedCount < 1){
             throw new Error('Blog does not exist');
         }
-
-        localDB.posts.splice(index, 1);
+        return
+    },
+    async findAllPosts():  Promise<WithId<Post>[]> {
+        const allPosts = await postsCollection.find().toArray();
+        return allPosts
+    },
+    async createNewPost(post: Post): Promise<WithId<Post>> {
+        const newPost = await postsCollection.insertOne(post);
+        return {...post, _id: newPost.insertedId}
+    },
+    async findPostById(id:string): Promise<WithId<Post> | null> {
+        const found = await  postsCollection.findOne({_id: new ObjectId(id)});
+        return found
+    },
+    async updatePost(id:string, newPost:PostInputModel):Promise<void>{
+        const updatedOne = await postsCollection.updateOne({_id: new ObjectId(id)},{
+            $set: {
+                title: newPost.title,
+                shortDescription: newPost.shortDescription,
+                content: newPost.content,
+                blogId: newPost.blogId
+            }
+        });
+        if(updatedOne.matchedCount < 1){
+            throw new Error('Blog does not exist');
+        }
+        return
+    },
+    async removePostById(id:string): Promise<void> {
+        const deletedOne = await blogsCollection.deleteOne({ _id: new ObjectId(id) });
+        if (deletedOne.deletedCount < 1) {
+            throw new Error('Blog does not exist');
+        }
         return
     }
 }

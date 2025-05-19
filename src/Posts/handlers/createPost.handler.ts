@@ -5,16 +5,20 @@ import {PostInputModel} from "../dto/post-input-model";
 import {Post} from "../Post";
 
 
-export function createPostHandler(req:Request<{},{},PostInputModel>,res:Response){
-    const posts = repository.findAllPosts();
-    const newPost:Post = {
-        id: posts.length ? (posts[posts.length - 1].id + 1) : "1",
-        title: req.body.title,
-        shortDescription: req.body.shortDescription,
-        content: req.body.content,
-        blogId: req.body.blogId,
-        blogName: repository.findBlogById(req.body.blogId)?.name || "blog name"
-    };
-    repository.createNewPost(newPost);
-    res.status(httpStatus.Created).send(newPost);
+export async function createPostHandler(req:Request<{},{},PostInputModel>,res:Response){
+    try {
+        const newPost:Post = {
+            title: req.body.title,
+            shortDescription: req.body.shortDescription,
+            content: req.body.content,
+            blogId: req.body.blogId,
+            blogName: "blog name"
+        };
+        // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
+        await repository.createNewPost(newPost);
+        res.status(httpStatus.Created).send(newPost);
+    }
+    catch (e){
+        res.sendStatus(httpStatus.InternalServerError)
+    }
 }

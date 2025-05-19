@@ -16,5 +16,5 @@ exports.postsRouter
     .get('', findAllPosts_handler_1.findAllPostsHandler)
     .post('', authorization_middleware_1.authorizeMiddleware, InputPost_validation_1.postInputModelValidation, ValidationErrors_1.checkValidationErrors, createPost_handler_1.createPostHandler)
     .get('/:id', checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, findPostById_handler_1.findPostByIdHandler)
-    .put('/:id', checkId_validation_1.idValidation, InputPost_validation_1.postInputModelValidation, ValidationErrors_1.checkValidationErrors, updatePostById_handler_1.updatePostByIdHandler)
-    .delete('/:id', checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, removePostById_handler_1.removePostByIdHandler);
+    .put('/:id', authorization_middleware_1.authorizeMiddleware, checkId_validation_1.idValidation, InputPost_validation_1.postInputModelValidation, ValidationErrors_1.checkValidationErrors, updatePostById_handler_1.updatePostByIdHandler)
+    .delete('/:id', authorization_middleware_1.authorizeMiddleware, checkId_validation_1.idValidation, ValidationErrors_1.checkValidationErrors, removePostById_handler_1.removePostByIdHandler);

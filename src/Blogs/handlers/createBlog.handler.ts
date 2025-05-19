@@ -5,14 +5,17 @@ import {repository} from "../../core/repository/data-acsess-layer";
 import {httpStatus} from "../../core/core-types/http-statuses";
 
 
-export function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Response){
-    const blogs = repository.findAllBlogs();
-    const newBlog:Blog = {
-        id: blogs.length ? (blogs[blogs.length - 1].id + 1).toString() : "1",
-        name: req.body.name,
-        description: req.body.description,
-        websiteUrl: req.body.websiteUrl
-    };
-    repository.createNewBlog(newBlog);
-    res.status(httpStatus.Created).send(newBlog)
+export async function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Response){
+    try{
+        const newBlog:Blog = {
+            name: req.body.name,
+            description: req.body.description,
+            websiteUrl: req.body.websiteUrl
+        };
+        await repository.createNewBlog(newBlog);
+        res.status(httpStatus.Created).send(newBlog)
+    }
+    catch (e){
+        res.sendStatus(httpStatus.InternalServerError)
+    }
 }

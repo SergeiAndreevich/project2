@@ -1,65 +1,118 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.repository = void 0;
-const mock_db_db_1 = require("../../db/mock-db.db");
+const mongodb_1 = require("mongodb");
+const mongo_db_1 = require("../../db/mongo.db");
 exports.repository = {
-    findAllBlogs: function () {
-        return mock_db_db_1.localDB.blogs;
+    findAllBlogs() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const allBlogs = yield mongo_db_1.blogsCollection.find().toArray();
+            return allBlogs;
+        });
     },
-    createNewBlog: function (blog) {
-        mock_db_db_1.localDB.blogs.push(blog);
-        return blog;
+    createNewBlog(newBlog) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const insertedOne = yield mongo_db_1.blogsCollection.insertOne(newBlog);
+            return Object.assign(Object.assign({}, newBlog), { _id: insertedOne.insertedId });
+        });
     },
-    findBlogById: function (id) {
-        const found = mock_db_db_1.localDB.blogs.find(blog => blog.id == id);
-        return found;
+    findBlogById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const found = localDB.blogs.find(blog => blog.id == id);
+            const found = yield mongo_db_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            return found;
+        });
     },
-    removeBlogById: function (id) {
-        const index = mock_db_db_1.localDB.blogs.findIndex((v) => v.id === id);
-        if (index === -1) {
-            throw new Error('Blog does not exist');
-        }
-        mock_db_db_1.localDB.blogs.splice(index, 1);
-        return;
+    removeBlogById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const index = localDB.blogs.findIndex((v) => v.id === id);
+            const deletedOne = yield mongo_db_1.blogsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+            if (deletedOne.deletedCount < 1) {
+                throw new Error('Blog does not exist');
+            }
+            return;
+        });
     },
-    removeAll: function () {
-        mock_db_db_1.localDB.posts = [];
-        mock_db_db_1.localDB.blogs = [];
+    removeAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield mongo_db_1.blogsCollection.deleteMany({});
+            yield mongo_db_1.postsCollection.deleteMany({});
+            return;
+        });
     },
-    findAll: function () {
-        const response = { posts: mock_db_db_1.localDB.posts, blogs: mock_db_db_1.localDB.blogs };
-        return response;
+    findAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const allBlogs = yield mongo_db_1.blogsCollection.find().toArray();
+            const allPosts = yield mongo_db_1.postsCollection.find().toArray();
+            const response = { posts: allPosts, blogs: allBlogs };
+            return response;
+        });
     },
-    updateBlog: function (oldBlog, newBlog) {
-        oldBlog.name = newBlog.name;
-        oldBlog.description = newBlog.description;
-        oldBlog.websiteUrl = newBlog.websiteUrl;
-        return;
+    updateBlog(id, newBlog) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updatedOne = yield mongo_db_1.blogsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
+                $set: {
+                    name: newBlog.name,
+                    description: newBlog.description,
+                    websiteUrl: newBlog.websiteUrl
+                }
+            });
+            if (updatedOne.matchedCount < 1) {
+                throw new Error('Blog does not exist');
+            }
+            return;
+        });
     },
-    findAllPosts: function () {
-        return mock_db_db_1.localDB.posts;
+    findAllPosts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const allPosts = yield mongo_db_1.postsCollection.find().toArray();
+            return allPosts;
+        });
     },
-    createNewPost: function (post) {
-        mock_db_db_1.localDB.posts.push(post);
-        return post;
+    createNewPost(post) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newPost = yield mongo_db_1.postsCollection.insertOne(post);
+            return Object.assign(Object.assign({}, post), { _id: newPost.insertedId });
+        });
     },
-    findPostById: function (id) {
-        const found = mock_db_db_1.localDB.posts.find(post => post.id == id);
-        return found;
+    findPostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const found = yield mongo_db_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            return found;
+        });
     },
-    updatePost: function (oldPost, newPost) {
-        oldPost.title = newPost.title;
-        oldPost.shortDescription = newPost.shortDescription;
-        oldPost.content = newPost.content;
-        oldPost.blogId = newPost.blogId;
-        return;
+    updatePost(id, newPost) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updatedOne = yield mongo_db_1.postsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
+                $set: {
+                    title: newPost.title,
+                    shortDescription: newPost.shortDescription,
+                    content: newPost.content,
+                    blogId: newPost.blogId
+                }
+            });
+            if (updatedOne.matchedCount < 1) {
+                throw new Error('Blog does not exist');
+            }
+            return;
+        });
     },
-    removePostById: function (id) {
-        const index = mock_db_db_1.localDB.posts.findIndex((v) => v.id === id);
-        if (index === -1) {
-            throw new Error('Blog does not exist');
-        }
-        mock_db_db_1.localDB.posts.splice(index, 1);
-        return;
+    removePostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const deletedOne = yield mongo_db_1.blogsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+            if (deletedOne.deletedCount < 1) {
+                throw new Error('Blog does not exist');
+            }
+            return;
+        });
     }
 };
