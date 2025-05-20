@@ -19,3 +19,5 @@ export const setupApp = (app: Express) => {
     //setupSwagger(app);
     return app;
 };
+
+//this version is only for memory. I want to see the process of changing. Here there is no MongoDB.
