@@ -13,7 +13,6 @@ import {runDB} from "../../src/db/mongo.db";
 import {SETTINGS} from "../../src/core/settings/db.settings";
 import {createTestBlog} from "../utils/Blogs-utils/create-test-blog.helper";
 import {ValidationErrorsStore} from "../../src/core/validation/ValidationErrors";
-import {createTestPost} from "../utils/Posts-utils/create-test-post.helper";
 
 describe('test blogs', ()=>{
     const app = express();
