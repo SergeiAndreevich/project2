@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findAllBlogsHandler = findAllBlogsHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
+const blogs_bll_service_1 = require("../BLL/blogs.bll.service");
 function findAllBlogsHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const blogs = yield data_acsess_layer_1.repository.findAllBlogs();
+            const blogs = yield blogs_bll_service_1.blogsService.findAllBlogs();
             const blogsToView = blogs.map((blog) => { (0, map_blog_to_view_model_1.mapBlogToViewModel)(blog); });
-            res.status(http_statuses_1.httpStatus.Ok).send(blogsToView);
+            res.send(blogsToView).status(http_statuses_1.httpStatus.Ok);
         }
         catch (e) {
             res.sendStatus((http_statuses_1.httpStatus.InternalServerError));

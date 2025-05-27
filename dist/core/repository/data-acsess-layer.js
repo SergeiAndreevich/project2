@@ -22,13 +22,16 @@ exports.repository = {
     createNewBlog(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             const insertedOne = yield mongo_db_1.blogsCollection.insertOne(newBlog);
-            return Object.assign(Object.assign({}, newBlog), { _id: insertedOne.insertedId });
+            return insertedOne.insertedId.toString();
         });
     },
-    findBlogById(id) {
+    findBlogByIdOrFail(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const found = localDB.blogs.find(blog => blog.id == id);
             const found = yield mongo_db_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!found) {
+                throw new Error('blog not found');
+            }
             return found;
         });
     },

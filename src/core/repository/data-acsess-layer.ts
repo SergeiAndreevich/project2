@@ -12,14 +12,16 @@ export const repository = {
         const allBlogs = await blogsCollection.find().toArray();
         return allBlogs
     },
-    async createNewBlog(newBlog:Blog): Promise<WithId<Blog>>{
+    async createNewBlog(newBlog:Blog): Promise<string>{
         const insertedOne = await blogsCollection.insertOne(newBlog);
-        return { ...newBlog, _id: insertedOne.insertedId }
+        return insertedOne.insertedId.toString()
     },
-    async findBlogById (id:string): Promise<WithId<Blog> | null> {
+    async findBlogByIdOrFail (id:string): Promise<WithId<Blog>> {
         //const found = localDB.blogs.find(blog => blog.id == id);
-
         const found = await blogsCollection.findOne({ _id: new ObjectId(id) });
+        if(!found){
+            throw new Error('blog not found');
+        }
         return found
     },
     async removeBlogById(id:string): Promise<void>{
