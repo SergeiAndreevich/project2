@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SETTINGS = void 0;
 exports.SETTINGS = {
-    PORT: process.env.PORT || 5004,
+    PORT: process.env.PORT || 5005,
     MONGO_URL: process.env.MONGO_URL || 'mongodb+srv://sergeytroshin00:admin@test.f11is3f.mongodb.net/backend-project4?retryWrites=true&w=majority&appName=Test',
     DB_NAME: process.env.DB_NAME || 'backend-project4'
 };

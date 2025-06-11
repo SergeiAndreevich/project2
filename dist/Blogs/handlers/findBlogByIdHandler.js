@@ -11,19 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findBlogByIdHandler = findBlogByIdHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
-const ValidationErrors_1 = require("../../core/validation/ValidationErrors");
 const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
-const blogs_bll_service_1 = require("../BLL/blogs.bll.service");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 function findBlogByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const blog = yield blogs_bll_service_1.blogsService.findBlogById(req.params.id);
-            if (!blog) {
-                res.status(http_statuses_1.httpStatus.NotFound).send((0, ValidationErrors_1.createErrorMessage)([{ field: 'id', message: 'Blog not found' }]));
-                return;
-            }
+            const blog = yield data_acsess_present_layer_1.queryRepo.findBlogByIdOrFail(req.params.id);
+            // if(!blog){
+            //     res.status(httpStatus.NotFound).send(
+            //         createErrorMessage([{ field: 'id', message: 'Blog not found' }]),
+            //     );
+            //     return
+            // }
             const blogToView = (0, map_blog_to_view_model_1.mapBlogToViewModel)(blog);
-            res.status(http_statuses_1.httpStatus.Ok).send(blogToView);
+            res.status(http_statuses_1.httpStatus.Ok).send(blogToView); // check the order
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

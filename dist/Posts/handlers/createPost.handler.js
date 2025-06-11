@@ -10,22 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPostHandler = createPostHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
+const posts_bll_service_1 = require("../BLL/posts.bll.service");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 function createPostHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const newPost = {
-                title: req.body.title,
-                shortDescription: req.body.shortDescription,
-                content: req.body.content,
-                blogId: req.body.blogId,
-                blogName: "blog name",
-                createdAt: new Date()
-            };
-            // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
-            const createdPost = yield data_acsess_layer_1.repository.createNewPost(newPost);
+            const createdPostId = yield posts_bll_service_1.postsService.createNewPost(req.body);
+            const createdPost = yield data_acsess_present_layer_1.queryRepo.findPostByIdOrFail(createdPostId);
             const newPostToView = (0, map_post_to_view_model_1.mapPostToViewModel)(createdPost);
             res.status(http_statuses_1.httpStatus.Created).send(newPostToView);
         }

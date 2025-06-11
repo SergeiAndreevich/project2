@@ -13,11 +13,12 @@ exports.createBlogHandler = createBlogHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
 const blogs_bll_service_1 = require("../BLL/blogs.bll.service");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 function createBlogHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const createdId = yield blogs_bll_service_1.blogsService.createNewBlog(req.body);
-            const createdBlog = yield blogs_bll_service_1.blogsService.findBlogById(createdId);
+            const createdBlog = yield data_acsess_present_layer_1.queryRepo.findBlogByIdOrFail(createdId);
             const blogToView = (0, map_blog_to_view_model_1.mapBlogToViewModel)(createdBlog);
             res.status(http_statuses_1.httpStatus.Created).send(blogToView);
         }

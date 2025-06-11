@@ -6,12 +6,13 @@ import {httpStatus} from "../../core/core-types/http-statuses";
 import {mapPostToViewModel} from "../../Posts/mappers/map-post-to-view-model";
 import {mapBlogToViewModel} from "../mappers/map-blog-to-view-model";
 import {blogsService} from "../BLL/blogs.bll.service";
+import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 
 
 export async function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Response){
     try{
         const createdId  = await blogsService.createNewBlog(req.body);
-        const createdBlog = await blogsService.findBlogById(createdId);
+        const createdBlog = await queryRepo.findBlogByIdOrFail(createdId);
         const blogToView = mapBlogToViewModel(createdBlog);
         res.status(httpStatus.Created).send(blogToView)
     }

@@ -9,32 +9,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsService = void 0;
+exports.postsService = void 0;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
-exports.blogsService = {
-    createNewBlog(dto) {
+exports.postsService = {
+    createNewPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newBlog = {
-                name: dto.name,
-                description: dto.description,
-                websiteUrl: dto.websiteUrl,
-                createdAt: new Date(),
-                isMembership: false
+            const newPost = {
+                title: post.title,
+                shortDescription: post.shortDescription,
+                content: post.content,
+                blogId: post.blogId,
+                blogName: "blog name",
+                createdAt: new Date()
             };
-            return yield data_acsess_layer_1.repository.createNewBlog(newBlog);
+            // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
+            return yield data_acsess_layer_1.repository.createNewPost(newPost);
         });
     },
-    removeBlogById(id) {
+    removePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            //const index = localDB.blogs.findIndex((v) => v.id === id);
-            yield data_acsess_layer_1.repository.removeBlogById(id);
+            yield data_acsess_layer_1.repository.removePostById(id);
             return;
         });
     },
-    updateBlog(id, newBlog) {
+    updatePostById(id, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield data_acsess_layer_1.repository.updateBlog(id, newBlog);
+            yield data_acsess_layer_1.repository.updatePost(id, body);
             return;
         });
-    },
+    }
 };

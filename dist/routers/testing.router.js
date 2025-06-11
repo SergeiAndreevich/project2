@@ -13,6 +13,7 @@ exports.testingRouter = void 0;
 const express_1 = require("express");
 const http_statuses_1 = require("../core/core-types/http-statuses");
 const data_acsess_layer_1 = require("../core/repository/data-acsess-layer");
+const data_acsess_present_layer_1 = require("../core/repository/data-acsess-present-layer");
 exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter
     .delete('/all-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,6 +24,6 @@ exports.testingRouter
     return;
 }))
     .get('/all-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const allData = yield data_acsess_layer_1.repository.findAll();
+    const allData = yield data_acsess_present_layer_1.queryRepo.findAll();
     res.status(http_statuses_1.httpStatus.Ok).send(allData);
 }));

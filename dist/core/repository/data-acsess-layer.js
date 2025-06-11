@@ -13,26 +13,10 @@ exports.repository = void 0;
 const mongodb_1 = require("mongodb");
 const mongo_db_1 = require("../../db/mongo.db");
 exports.repository = {
-    findAllBlogs() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const allBlogs = yield mongo_db_1.blogsCollection.find().toArray();
-            return allBlogs;
-        });
-    },
     createNewBlog(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             const insertedOne = yield mongo_db_1.blogsCollection.insertOne(newBlog);
             return insertedOne.insertedId.toString();
-        });
-    },
-    findBlogByIdOrFail(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            //const found = localDB.blogs.find(blog => blog.id == id);
-            const found = yield mongo_db_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
-            if (!found) {
-                throw new Error('blog not found');
-            }
-            return found;
         });
     },
     removeBlogById(id) {
@@ -52,14 +36,6 @@ exports.repository = {
             return;
         });
     },
-    findAll() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const allBlogs = yield mongo_db_1.blogsCollection.find().toArray();
-            const allPosts = yield mongo_db_1.postsCollection.find().toArray();
-            const response = { posts: allPosts, blogs: allBlogs };
-            return response;
-        });
-    },
     updateBlog(id, newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             const updatedOne = yield mongo_db_1.blogsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
@@ -75,22 +51,10 @@ exports.repository = {
             return;
         });
     },
-    findAllPosts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const allPosts = yield mongo_db_1.postsCollection.find().toArray();
-            return allPosts;
-        });
-    },
     createNewPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             const newPost = yield mongo_db_1.postsCollection.insertOne(post);
-            return Object.assign(Object.assign({}, post), { _id: newPost.insertedId });
-        });
-    },
-    findPostById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const found = yield mongo_db_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
-            return found;
+            return newPost.insertedId.toString();
         });
     },
     updatePost(id, newPost) {
