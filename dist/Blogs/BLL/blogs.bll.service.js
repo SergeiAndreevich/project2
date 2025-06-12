@@ -19,7 +19,7 @@ exports.blogsService = {
                 description: dto.description,
                 websiteUrl: dto.websiteUrl,
                 createdAt: new Date(),
-                isMembership: false
+                isMembership: true
             };
             return yield data_acsess_layer_1.repository.createNewBlog(newBlog);
         });

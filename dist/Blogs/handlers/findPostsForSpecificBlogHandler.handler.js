@@ -9,24 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findAllBlogsHandler = findAllBlogsHandler;
+exports.findPostsForSpecificBlogHandler = findPostsForSpecificBlogHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
-const BlogsSortAndPagination_helper_1 = require("../../core/helpers/BlogsSortAndPagination.helper");
-const map_blogs_list_pagination_1 = require("../mappers/map-blogs-list-pagination");
-function findAllBlogsHandler(req, res) {
+const PostsSortAndPagination_helper_1 = require("../../core/helpers/PostsSortAndPagination.helper");
+const map_posts_for_specific_blog_pagination_1 = require("../mappers/map-posts-for-specific-blog-pagination");
+function findPostsForSpecificBlogHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            //const blogs = await queryRepo.findAllBlogs();
-            const queryInput = (0, BlogsSortAndPagination_helper_1.setDefaultSortAndPaginationIfNotExist)(req.query);
-            const { items, totalCount } = yield data_acsess_present_layer_1.queryRepo.findBlogsByCriteria(queryInput);
-            const blogsToView = (0, map_blogs_list_pagination_1.mapToBlogsListPaginatedOutput)(items, {
+            // выставили значения пагинации
+            const queryInput = (0, PostsSortAndPagination_helper_1.setDefaultSortAndPaginationIfNotExist)(req.query);
+            //ищем блог и его посты согласно критериям поиска
+            const blog = yield data_acsess_present_layer_1.queryRepo.findBlogByIdOrFail(req.params.blogId);
+            const blogId = blog._id.toString();
+            const { items, totalCount } = yield data_acsess_present_layer_1.queryRepo.findPostsForSpecificBlog(blogId, queryInput);
+            const blogAndPostsToView = (0, map_posts_for_specific_blog_pagination_1.mapPostsForSpecificBlogPagination)(items, {
                 pageNumber: queryInput.pageNumber,
                 pageSize: queryInput.pageSize,
                 totalCount
             });
             //const blogsToView = blogs.map(blog=>mapBlogToViewModel(blog))
-            res.send(blogsToView).status(http_statuses_1.httpStatus.Ok); // mb change the order
+            res.send(blogAndPostsToView).status(http_statuses_1.httpStatus.Ok); // mb change the order
         }
         catch (e) {
             res.sendStatus(http_statuses_1.httpStatus.InternalServerError);

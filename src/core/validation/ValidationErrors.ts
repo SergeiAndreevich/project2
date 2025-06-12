@@ -2,16 +2,36 @@ import {NextFunction, Request, Response} from 'express';
 import {FieldValidationError, ValidationError, validationResult} from "express-validator";
 import {httpStatus} from "../core-types/http-statuses";
 
+//то что приходит по факту. Некоторые поля могу быть пустыми
 export type ValidationErrorExample = {
     field: string,
     message: string
+    // status: httpStatus;
+    // detail: string;
+    // source?: string;
+    // code?: string
+}
+// то что видит пользователь. Тут все поля должны быть заполнены
+export type ValidationErrorOutput = {
+    status: httpStatus;
+    detail: string;
+    source: { pointer: string };
+    code: string | null;
 }
 export type ValidationErrorsStore = {
     errorsMessages: ValidationErrorExample[]
 }
 
 export const createErrorMessage = (errors: ValidationErrorExample[]):ValidationErrorsStore =>{
-    return {errorsMessages:errors};
+    return {
+        errorsMessages:errors
+        // errors: errors.map((error)=>({
+        //     status: error.status,
+        //     detail: error.detail, //error message
+        //     source: { pointer: error.source ?? '' }, //error field
+        //     code: error.code ?? null, //domain error code
+        // }))
+    }
 }
 
 const formatErrors = (error: ValidationError) => {
@@ -23,8 +43,11 @@ const formatErrors = (error: ValidationError) => {
     //    error as unknown: Сначала приводится тип error к типу unknown. unknown - это специальный тип в TypeScript, который может представлять любое значение.
     //    as FieldValidationError: Затем тип unknown приводится к типу FieldValidationError. Тип FieldValidationError более специфичен, чем ValidationError, и представляет собой ошибку валидации, связанную с конкретным полем. Он, вероятно, содержит свойства, специфичные для ошибок, связанных с полями (например, имя поля).
     return {
-        field: myErrorView.path,
-        message: myErrorView.msg,
+         field: myErrorView.path,
+         message: myErrorView.msg,
+        // status: httpStatus.BadRequest,
+        // source: myErrorView.path,
+        // detail: myErrorView.msg
     };
 };
 

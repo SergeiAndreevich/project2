@@ -11,18 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsService = void 0;
 const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 exports.postsService = {
     createNewPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
+            const blogInfo = yield data_acsess_present_layer_1.queryRepo.findBlogByIdOrFail(post.blogId);
             const newPost = {
                 title: post.title,
                 shortDescription: post.shortDescription,
                 content: post.content,
-                blogId: post.blogId,
-                blogName: "blog name",
+                blogId: blogInfo._id.toString(),
+                blogName: blogInfo.name,
                 createdAt: new Date()
             };
-            // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
             return yield data_acsess_layer_1.repository.createNewPost(newPost);
         });
     },
