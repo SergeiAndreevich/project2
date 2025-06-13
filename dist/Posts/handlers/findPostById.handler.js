@@ -10,18 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findPostByIdHandler = findPostByIdHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
-const ValidationErrors_1 = require("../../core/validation/ValidationErrors");
 const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 function findPostByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const post = yield data_acsess_layer_1.repository.findPostById(req.params.id);
-            if (!post) {
-                res.status(http_statuses_1.httpStatus.NotFound).send((0, ValidationErrors_1.createErrorMessage)([{ field: 'id', message: 'Post not found' }]));
-                return;
-            }
+            const post = yield data_acsess_present_layer_1.queryRepo.findPostByIdOrFail(req.params.id);
+            // if(!post){
+            //     res.status(httpStatus.NotFound).send(
+            //         createErrorMessage([{ field: 'id', message: 'Post not found' }]),
+            //     );
+            //     return
+            // }
             const postToView = (0, map_post_to_view_model_1.mapPostToViewModel)(post);
             res.status(http_statuses_1.httpStatus.Ok).send(postToView);
         }

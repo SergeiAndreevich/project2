@@ -10,18 +10,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findAllBlogsHandler = findAllBlogsHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
-const map_blog_to_view_model_1 = require("../mappers/map-blog-to-view-model");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
+const BlogsSortAndPagination_helper_1 = require("../../core/helpers/BlogsSortAndPagination.helper");
+const map_blogs_list_pagination_1 = require("../mappers/map-blogs-list-pagination");
 function findAllBlogsHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const blogs = yield data_acsess_layer_1.repository.findAllBlogs();
-            const blogsToView = blogs.map((blog) => { (0, map_blog_to_view_model_1.mapBlogToViewModel)(blog); });
-            res.status(http_statuses_1.httpStatus.Ok).send(blogsToView);
+            //const blogs = await queryRepo.findAllBlogs();
+            const queryInput = (0, BlogsSortAndPagination_helper_1.setDefaultSortAndPaginationIfNotExist)(req.query);
+            const { items, totalCount } = yield data_acsess_present_layer_1.queryRepo.findBlogsByCriteria(queryInput);
+            const blogsToView = (0, map_blogs_list_pagination_1.mapToBlogsListPaginatedOutput)(items, {
+                pageNumber: queryInput.pageNumber,
+                pageSize: queryInput.pageSize,
+                totalCount
+            });
+            //const blogsToView = blogs.map(blog=>mapBlogToViewModel(blog))
+            res.send(blogsToView).status(http_statuses_1.httpStatus.Ok); // mb change the order
         }
         catch (e) {
-            res.sendStatus((http_statuses_1.httpStatus.InternalServerError));
+            res.sendStatus(http_statuses_1.httpStatus.InternalServerError);
         }
     });
 }

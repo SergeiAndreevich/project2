@@ -4,24 +4,19 @@ import {httpStatus} from "../../core/core-types/http-statuses";
 import {PostInputModel} from "../dto/post-input-model";
 import {Post} from "../Post";
 import {mapPostToViewModel} from "../mappers/map-post-to-view-model";
+import {postsService} from "../BLL/posts.bll.service";
+import {queryRepo} from "../../core/repository/data-acsess-present-layer";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 
 export async function createPostHandler(req:Request<{},{},PostInputModel>,res:Response){
     try {
-        const newPost:Post = {
-            title: req.body.title,
-            shortDescription: req.body.shortDescription,
-            content: req.body.content,
-            blogId: req.body.blogId,
-            blogName: "blog name",
-            createdAt: new Date()
-        };
-        // тут на blogName стоит заглушка. Нужно как-то обдумать её обход, чтобы связывать с имененм блога через id
-        const createdPost = await repository.createNewPost(newPost);
+        const createdPostId = await postsService.createNewPost(req.body);
+        const createdPost = await queryRepo.findPostByIdOrFail(createdPostId);
         const newPostToView = mapPostToViewModel(createdPost);
-        res.status(httpStatus.Created).send(newPostToView);
+        res.status(httpStatus.Created).send(newPostToView)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }

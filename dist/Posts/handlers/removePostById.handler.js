@@ -10,19 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removePostByIdHandler = removePostByIdHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
-const ValidationErrors_1 = require("../../core/validation/ValidationErrors");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
+const posts_bll_service_1 = require("../BLL/posts.bll.service");
 function removePostByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const id = req.params.id;
-            const post = yield data_acsess_layer_1.repository.findPostById(id);
-            if (!post) {
-                res.status(http_statuses_1.httpStatus.NotFound).send((0, ValidationErrors_1.createErrorMessage)([{ field: 'id', message: 'Post not found' }]));
-                return;
-            }
-            yield data_acsess_layer_1.repository.removePostById(id);
+            yield data_acsess_present_layer_1.queryRepo.findPostByIdOrFail(id);
+            // if(!post){
+            //     res.status(httpStatus.NotFound).send(
+            //         createErrorMessage([{ field: 'id', message: 'Post not found' }]),
+            //     );
+            //     return
+            // }
+            yield posts_bll_service_1.postsService.removePostById(id);
             res.sendStatus(http_statuses_1.httpStatus.NoContent);
         }
         catch (e) {

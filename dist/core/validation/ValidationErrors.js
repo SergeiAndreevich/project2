@@ -4,7 +4,15 @@ exports.checkValidationErrors = exports.createErrorMessage = void 0;
 const express_validator_1 = require("express-validator");
 const http_statuses_1 = require("../core-types/http-statuses");
 const createErrorMessage = (errors) => {
-    return { errorsMessages: errors };
+    return {
+        errorsMessages: errors
+        // errors: errors.map((error)=>({
+        //     status: error.status,
+        //     detail: error.detail, //error message
+        //     source: { pointer: error.source ?? '' }, //error field
+        //     code: error.code ?? null, //domain error code
+        // }))
+    };
 };
 exports.createErrorMessage = createErrorMessage;
 const formatErrors = (error) => {
@@ -17,6 +25,9 @@ const formatErrors = (error) => {
     return {
         field: myErrorView.path,
         message: myErrorView.msg,
+        // status: httpStatus.BadRequest,
+        // source: myErrorView.path,
+        // detail: myErrorView.msg
     };
 };
 const checkValidationErrors = (req, res, next) => {

@@ -8,19 +8,9 @@ import {blogsCollection, postsCollection} from "../../db/mongo.db";
 import allPresets from "ts-jest/presets";
 
 export const repository = {
-    async findAllBlogs(): Promise<WithId<Blog>[]>{
-        const allBlogs = await blogsCollection.find().toArray();
-        return allBlogs
-    },
-    async createNewBlog(newBlog:Blog): Promise<WithId<Blog>>{
+    async createNewBlog(newBlog:Blog): Promise<string>{
         const insertedOne = await blogsCollection.insertOne(newBlog);
-        return { ...newBlog, _id: insertedOne.insertedId }
-    },
-    async findBlogById (id:string): Promise<WithId<Blog> | null> {
-        //const found = localDB.blogs.find(blog => blog.id == id);
-
-        const found = await blogsCollection.findOne({ _id: new ObjectId(id) });
-        return found
+        return insertedOne.insertedId.toString()
     },
     async removeBlogById(id:string): Promise<void>{
         //const index = localDB.blogs.findIndex((v) => v.id === id);
@@ -34,12 +24,6 @@ export const repository = {
         await blogsCollection.deleteMany({});
         await postsCollection.deleteMany({});
         return
-    },
-    async findAll(): Promise<{}> {
-        const allBlogs = await blogsCollection.find().toArray();
-        const allPosts = await postsCollection.find().toArray();
-        const response = {posts: allPosts, blogs: allBlogs};
-        return response
     },
     async updateBlog(id: string, newBlog:BlogInputModel): Promise<void> {
         const updatedOne = await blogsCollection.updateOne({ _id: new ObjectId(id) },
@@ -55,17 +39,9 @@ export const repository = {
         }
         return
     },
-    async findAllPosts():  Promise<WithId<Post>[]> {
-        const allPosts = await postsCollection.find().toArray();
-        return allPosts
-    },
-    async createNewPost(post: Post): Promise<WithId<Post>> {
+    async createNewPost(post: Post): Promise<string> {
         const newPost = await postsCollection.insertOne(post);
-        return {...post, _id: newPost.insertedId}
-    },
-    async findPostById(id:string): Promise<WithId<Post> | null> {
-        const found = await  postsCollection.findOne({_id: new ObjectId(id)});
-        return found
+        return newPost.insertedId.toString()
     },
     async updatePost(id:string, newPost:PostInputModel):Promise<void>{
         const updatedOne = await postsCollection.updateOne({_id: new ObjectId(id)},{

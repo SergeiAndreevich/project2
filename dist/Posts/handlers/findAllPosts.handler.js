@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findAllPostsHandler = findAllPostsHandler;
-const data_acsess_layer_1 = require("../../core/repository/data-acsess-layer");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
+const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 function findAllPostsHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const posts = yield data_acsess_layer_1.repository.findAllPosts();
+            const posts = yield data_acsess_present_layer_1.queryRepo.findAllPosts();
             const postsToView = posts.map(post => (0, map_post_to_view_model_1.mapPostToViewModel)(post));
             res.status(http_statuses_1.httpStatus.Ok).send(postsToView);
         }

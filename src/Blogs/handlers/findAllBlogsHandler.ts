@@ -5,9 +5,18 @@ import {mapBlogToViewModel} from "../mappers/map-blog-to-view-model";
 
 export async function findAllBlogsHandler(req:Request,res:Response) {
     try{
-        const blogs = await repository.findAllBlogs();
-        const blogsToView = blogs.map(mapBlogToViewModel)
-        res.send(blogsToView).status(httpStatus.Ok)
+        //const blogs = await queryRepo.findAllBlogs();
+        const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
+
+        const { items, totalCount } = await queryRepo.findBlogsByCriteria(queryInput);
+        const blogsToView = mapToBlogsListPaginatedOutput(items, {
+            pageNumber: queryInput.pageNumber,
+            pageSize: queryInput.pageSize,
+            totalCount
+        });
+
+        //const blogsToView = blogs.map(blog=>mapBlogToViewModel(blog))
+        res.send(blogsToView).status(httpStatus.Ok)  // mb change the order
     }
     catch(e){
         res.sendStatus((httpStatus.InternalServerError))
