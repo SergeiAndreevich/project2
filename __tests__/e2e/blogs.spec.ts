@@ -36,8 +36,9 @@ describe('test blogs', ()=>{
     it('find all blogs', async () => {
         await createTestBlog(app)
         const blogs = await request(app).get(PATH.blogs).set('Authorization', createAuthorizationToken()).expect(httpStatus.Ok);
-        expect(blogs.body).toBeInstanceOf(Array);
-        expect(blogs.body.length).toBeGreaterThanOrEqual(1);
+        //console.log(blogs.body);
+        expect(blogs.body).toBeInstanceOf(Object);
+        expect(blogs.body.items.length).toBeGreaterThanOrEqual(1);
     });
     it('find blog by id', async () => {
         const createdBlog = await createTestBlog(app);

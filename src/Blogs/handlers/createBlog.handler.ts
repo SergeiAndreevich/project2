@@ -7,6 +7,7 @@ import {mapPostToViewModel} from "../../Posts/mappers/map-post-to-view-model";
 import {mapBlogToViewModel} from "../mappers/map-blog-to-view-model";
 import {blogsService} from "../BLL/blogs.bll.service";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 
 export async function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Response){
@@ -17,6 +18,6 @@ export async function createBlogHandler(req:Request<{},{},BlogInputModel>,res:Re
         res.status(httpStatus.Created).send(blogToView)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }

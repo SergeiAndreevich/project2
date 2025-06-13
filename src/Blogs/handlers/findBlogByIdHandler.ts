@@ -6,6 +6,7 @@ import {blogsService} from "../BLL/blogs.bll.service";
 import {WithId} from "mongodb";
 import {Blog} from "../Blog";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function findBlogByIdHandler(req:Request,res:Response) {
     try {
@@ -20,7 +21,7 @@ export async function findBlogByIdHandler(req:Request,res:Response) {
         res.status(httpStatus.Ok).send(blogToView)  // check the order
     }
     catch(e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 
 

@@ -45,7 +45,8 @@ describe('test blogs', ()=>{
         //столько и ошибок. Теперь пусть в url лежить хоть 1000 ошибок, будет выдавать только первую
         //если написать res.body.errorMessages, то выдаст массив с ошибками. Здесь в url лежит 2 ошибки (длина и isURL)
         const blogs = await request(app).get(PATH.blogs).expect(httpStatus.Ok);
-        expect(blogs.body.length).toBe(0)
+        //console.log(blogs)
+        expect(blogs.body.items.length).toBe(0)
     });
 
     it('should not create blog',  async () => {

@@ -82,7 +82,7 @@ describe('test posts', ()=>{
             title: 'new title',
             shortDescription: 'new description',
             content: 'content',
-            blogId: '682b3734e277c47e4a7fe046'
+            blogId: createdPost.blogId
         };
         await changePostById(app, createdPost.id, updateData);
         const postResponse = await findPostById(app, createdPost.id);

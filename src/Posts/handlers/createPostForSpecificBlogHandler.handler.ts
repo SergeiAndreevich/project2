@@ -4,6 +4,7 @@ import {postsService} from "../BLL/posts.bll.service";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 import {mapPostToViewModel} from "../mappers/map-post-to-view-model";
 import {httpStatus} from "../../core/core-types/http-statuses";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function createPostForSpecificBlogHandler(req:Request<{blogId:string},{},PostInputModel>,res:Response){
     try {
@@ -14,6 +15,6 @@ export async function createPostForSpecificBlogHandler(req:Request<{blogId:strin
         res.status(httpStatus.Created).send(newPostToView)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }

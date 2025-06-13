@@ -6,6 +6,7 @@ import {BlogInputModel} from "../dto/blog-input-model";
 import {createErrorMessage} from "../../core/validation/ValidationErrors";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 import {blogsService} from "../BLL/blogs.bll.service";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function updateBlogByIdHandler(req:Request<{id:string},{},BlogInputModel>,res:Response) {
     //const blog = repository.findBlogById(req.params.id);
@@ -22,6 +23,6 @@ export async function updateBlogByIdHandler(req:Request<{id:string},{},BlogInput
         res.sendStatus(httpStatus.NoContent)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }

@@ -3,6 +3,7 @@ import {httpStatus} from "../../core/core-types/http-statuses";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 import {setDefaultSortAndPaginationIfNotExist} from "../../core/helpers/BlogsSortAndPagination.helper";
 import {mapToBlogsListPaginatedOutput} from "../mappers/map-blogs-list-pagination";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function findAllBlogsHandler(req:Request,res:Response) {
     try{
@@ -20,6 +21,6 @@ export async function findAllBlogsHandler(req:Request,res:Response) {
         res.send(blogsToView).status(httpStatus.Ok)  // mb change the order
     }
     catch(e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }

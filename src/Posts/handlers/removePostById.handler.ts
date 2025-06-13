@@ -4,6 +4,7 @@ import {httpStatus} from "../../core/core-types/http-statuses";
 import {createErrorMessage} from "../../core/validation/ValidationErrors";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 import {postsService} from "../BLL/posts.bll.service";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function removePostByIdHandler(req:Request,res:Response) {
     try {
@@ -19,7 +20,7 @@ export async function removePostByIdHandler(req:Request,res:Response) {
         res.sendStatus(httpStatus.NoContent)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 
 }

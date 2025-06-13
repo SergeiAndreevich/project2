@@ -3,6 +3,7 @@ import {httpStatus} from "../../core/core-types/http-statuses";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
 import {setDefaultSortAndPaginationIfNotExist} from "../../core/helpers/PostsSortAndPagination.helper";
 import {mapPostsForSpecificBlogPagination} from "../mappers/map-posts-for-specific-blog-pagination";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 export async function findPostsForSpecificBlogHandler(req:Request,res:Response) {
     try {
@@ -23,7 +24,7 @@ export async function findPostsForSpecificBlogHandler(req:Request,res:Response) 
         res.send(blogAndPostsToView).status(httpStatus.Ok)  // mb change the order
     }
     catch(e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 
 

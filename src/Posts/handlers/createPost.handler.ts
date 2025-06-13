@@ -6,6 +6,7 @@ import {Post} from "../Post";
 import {mapPostToViewModel} from "../mappers/map-post-to-view-model";
 import {postsService} from "../BLL/posts.bll.service";
 import {queryRepo} from "../../core/repository/data-acsess-present-layer";
+import {errorsHandler} from "../../core/helpers/errorsHandler.helper";
 
 
 export async function createPostHandler(req:Request<{},{},PostInputModel>,res:Response){
@@ -16,6 +17,6 @@ export async function createPostHandler(req:Request<{},{},PostInputModel>,res:Re
         res.status(httpStatus.Created).send(newPostToView)
     }
     catch (e){
-        res.sendStatus(httpStatus.InternalServerError)
+        errorsHandler(e,res)
     }
 }
