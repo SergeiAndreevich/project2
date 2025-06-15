@@ -14,6 +14,7 @@ import {blogIdValidation} from "../core/validation/blogIdValidation.validation";
 import {findPostsForSpecificBlogHandler} from "../Blogs/handlers/findPostsForSpecificBlogHandler.handler";
 import {postInputModelValidation} from "../core/validation/InputPost.validation";
 import {createPostForSpecificBlogHandler} from "../Posts/handlers/createPostForSpecificBlogHandler.handler";
+import {BlogPostInputModelValidation} from "../core/validation/blogPostInput.validation";
 
 export const blogsRouter = Router({});
 
@@ -22,6 +23,6 @@ blogsRouter
     .get('/:id',idValidation, checkValidationErrors, findBlogByIdHandler)
     .get('/:blogId/posts', blogIdValidation, paginationAndSortingValidation(PostsSortFields), checkValidationErrors, findPostsForSpecificBlogHandler)
     .post('', authorizeMiddleware, blogInputModelValidation, checkValidationErrors, createBlogHandler)
-    .post('/:blogId/posts',blogIdValidation, authorizeMiddleware,postInputModelValidation,checkValidationErrors,createPostForSpecificBlogHandler)
+    .post('/:blogId/posts',blogIdValidation, authorizeMiddleware,BlogPostInputModelValidation,checkValidationErrors,createPostForSpecificBlogHandler)
     .put('/:id', authorizeMiddleware, idValidation,blogInputModelValidation, checkValidationErrors, updateBlogByIdHandler)
     .delete('/:id', authorizeMiddleware, idValidation, checkValidationErrors, removeBlogByIdHandler)
