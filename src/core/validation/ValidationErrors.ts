@@ -60,6 +60,11 @@ export const checkValidationErrors = (
         .formatWith(formatErrors).array({ onlyFirstError: true });
 
     if (errors.length > 0) {
+        const blogIdError = errors.find(error => error.field === "blogId");
+        // Проверяем, найдена ли ошибка
+        if (blogIdError) {
+            res.status(httpStatus.NotFound).send(createErrorMessage(errors))
+        }
         //res.status(HttpStatus.BadRequest).json({ errorMessages: errors });
         res.status(httpStatus.BadRequest).send(createErrorMessage(errors));
         return;
