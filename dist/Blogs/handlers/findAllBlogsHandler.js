@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findAllBlogsHandler = findAllBlogsHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
-const BlogsSortAndPagination_helper_1 = require("../../core/helpers/BlogsSortAndPagination.helper");
 const map_blogs_list_pagination_1 = require("../mappers/map-blogs-list-pagination");
+const BlogsSortAndPagination_helper_1 = require("../../core/helpers/BlogsSortAndPagination.helper");
 function findAllBlogsHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -29,7 +29,7 @@ function findAllBlogsHandler(req, res) {
             res.send(blogsToView).status(http_statuses_1.httpStatus.Ok); // mb change the order
         }
         catch (e) {
-            res.sendStatus(http_statuses_1.httpStatus.InternalServerError);
+            res.sendStatus((http_statuses_1.httpStatus.InternalServerError));
         }
     });
 }

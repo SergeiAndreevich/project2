@@ -13,6 +13,7 @@ exports.removePostByIdHandler = removePostByIdHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 const posts_bll_service_1 = require("../BLL/posts.bll.service");
+const errorsHandler_helper_1 = require("../../core/helpers/errorsHandler.helper");
 function removePostByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -28,7 +29,7 @@ function removePostByIdHandler(req, res) {
             res.sendStatus(http_statuses_1.httpStatus.NoContent);
         }
         catch (e) {
-            res.sendStatus(http_statuses_1.httpStatus.InternalServerError);
+            (0, errorsHandler_helper_1.errorsHandler)(e, res);
         }
     });
 }

@@ -13,6 +13,7 @@ exports.findPostByIdHandler = findPostByIdHandler;
 const http_statuses_1 = require("../../core/core-types/http-statuses");
 const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
 const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
+const errorsHandler_helper_1 = require("../../core/helpers/errorsHandler.helper");
 function findPostByIdHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -27,7 +28,7 @@ function findPostByIdHandler(req, res) {
             res.status(http_statuses_1.httpStatus.Ok).send(postToView);
         }
         catch (e) {
-            res.sendStatus(http_statuses_1.httpStatus.InternalServerError);
+            (0, errorsHandler_helper_1.errorsHandler)(e, res);
         }
     });
 }

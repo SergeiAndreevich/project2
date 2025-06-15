@@ -14,6 +14,7 @@ const posts_bll_service_1 = require("../BLL/posts.bll.service");
 const data_acsess_present_layer_1 = require("../../core/repository/data-acsess-present-layer");
 const map_post_to_view_model_1 = require("../mappers/map-post-to-view-model");
 const http_statuses_1 = require("../../core/core-types/http-statuses");
+const errorsHandler_helper_1 = require("../../core/helpers/errorsHandler.helper");
 function createPostForSpecificBlogHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -24,7 +25,7 @@ function createPostForSpecificBlogHandler(req, res) {
             res.status(http_statuses_1.httpStatus.Created).send(newPostToView);
         }
         catch (e) {
-            res.sendStatus(http_statuses_1.httpStatus.InternalServerError);
+            (0, errorsHandler_helper_1.errorsHandler)(e, res);
         }
     });
 }
